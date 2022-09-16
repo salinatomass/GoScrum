@@ -1,16 +1,35 @@
-import React, { useState } from 'react'
+import { useFormik } from 'formik'
 
 export const Login = () => {
-  const [form, setForm] = useState({ email: '', password: '' })
-
-  const handleChange = e => {
-    setForm(prevForm => ({ ...prevForm, [e.target.name]: e.target.value }))
+  const initialValues = {
+    email: '',
+    password: '',
   }
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    console.log(form)
+  const validate = values => {
+    const errors = {}
+
+    if (!values.email) {
+      errors.email = 'El email es requerido'
+    }
+
+    if (!values.password) {
+      errors.password = 'El password es requerido'
+    }
+
+    return errors
   }
+
+  const onSubmit = () => {
+    // localStorage.setItem('logged', 'yes')
+    alert('Logged')
+  }
+
+  const { handleChange, handleSubmit, values, errors } = useFormik({
+    initialValues,
+    validate,
+    onSubmit,
+  })
 
   return (
     <div className="container">
@@ -22,9 +41,10 @@ export const Login = () => {
             type="email"
             name="email"
             id="email"
-            value={form.email}
+            value={values.email}
             onChange={handleChange}
           />
+          {errors.email && <div className="form-error">{errors.email}</div>}
         </div>
         <div>
           <label htmlFor="password">Contraseña</label>
@@ -32,9 +52,12 @@ export const Login = () => {
             type="password"
             name="password"
             id="password"
-            value={form.password}
+            value={values.password}
             onChange={handleChange}
           />
+          {errors.password && (
+            <div className="form-error">{errors.password}</div>
+          )}
         </div>
         <div>
           <button type="submit">Enviar</button>

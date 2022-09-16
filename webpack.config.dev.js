@@ -1,5 +1,5 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 /** @type {import('webpack').Configuration} */
 module.exports = {
@@ -21,6 +21,7 @@ module.exports = {
     historyApiFallback: true,
     port: 3006,
   },
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -46,4 +47,4 @@ module.exports = {
       filename: './index.html',
     }),
   ],
-};
+}
