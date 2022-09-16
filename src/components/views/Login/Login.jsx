@@ -21,8 +21,7 @@ export const Login = () => {
   }
 
   const onSubmit = () => {
-    // localStorage.setItem('logged', 'yes')
-    alert('Logged')
+    localStorage.setItem('logged', 'yes')
   }
 
   const { handleChange, handleSubmit, values, errors } = useFormik({
