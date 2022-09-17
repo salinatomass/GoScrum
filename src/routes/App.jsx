@@ -1,10 +1,12 @@
+import React, { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 import '../styles/App.css'
 import { Tasks } from '../components/views/Tasks'
 import { Login } from '../components/views/Login'
 import { Register } from '../components/views/Register'
-import { NotFound } from '../components/views/NotFound'
+
+const NotFound = lazy(() => import('../components/views/NotFound'))
 
 const RequireAuth = ({ children }) => {
   if (!localStorage.getItem('logged'))
@@ -27,7 +29,14 @@ const App = () => {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="*" element={<NotFound />} />
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<>...</>}>
+              <NotFound />
+            </Suspense>
+          }
+        />
       </Routes>
     </BrowserRouter>
   )
