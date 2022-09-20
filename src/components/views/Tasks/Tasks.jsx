@@ -1,1 +1,3 @@
-export const Tasks = () => <h1>Tareas</h1>
+import Header from '../../Header/Header'
+
+export const Tasks = () => <Header />

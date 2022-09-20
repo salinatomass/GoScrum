@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 
+import './Login.styles.css'
+
 export const Login = () => {
   const navigate = useNavigate()
   const initialValues = {
@@ -34,7 +36,7 @@ export const Login = () => {
   })
 
   return (
-    <div className="container">
+    <div className="auth">
       <form className="form" onSubmit={handleSubmit}>
         <h1>Iniciar sesión</h1>
         <div>

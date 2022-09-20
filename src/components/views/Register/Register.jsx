@@ -21,7 +21,7 @@ export const Register = () => {
   })
 
   return (
-    <div className="container">
+    <div className="auth">
       <form className="form" onSubmit={handleSubmit}>
         <h1>Regístrate</h1>
         <div>
