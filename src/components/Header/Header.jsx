@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 
 import './Header.styles.css'
-import Logo from '/public/img/goscrum.png'
+import Logo from '/goscrum.png'
 
 const Header = () => {
   const navigate = useNavigate()
