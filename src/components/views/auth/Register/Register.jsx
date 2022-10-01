@@ -5,7 +5,7 @@ import * as Yup from 'yup'
 import { v4 as uuidv4 } from 'uuid'
 import { Switch, FormControlLabel } from '@mui/material'
 
-const BASE_API = 'https://goscrum-api.alkemy.org'
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT
 
 export const Register = () => {
   const [data, setData] = useState({})
@@ -13,7 +13,7 @@ export const Register = () => {
 
   const fetchData = async () => {
     try {
-      const res = await fetch(`${BASE_API}/auth/data`)
+      const res = await fetch(`${API_ENDPOINT}/auth/data`)
       const data = await res.json()
       setData(data.result)
     } catch (err) {
@@ -51,7 +51,7 @@ export const Register = () => {
     const teamID = values.teamID ? values.teamID : uuidv4()
 
     try {
-      const res = await fetch(`${BASE_API}/auth/register`, {
+      const res = await fetch(`${API_ENDPOINT}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

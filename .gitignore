@@ -6,3 +6,6 @@ dist/
 
 ## editor
 .vscode
+
+## Env Variables
+.env
