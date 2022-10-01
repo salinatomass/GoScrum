@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import './App.css'
 import { Tasks } from '../components/views/Tasks'
 import { Login, Register } from '../components/views/auth'
+import { Registered } from '../components/views/Registered'
 
 const NotFound = lazy(() => import('../components/views/NotFound'))
 
@@ -28,6 +29,7 @@ const App = () => {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/registered/:teamID" element={<Registered />} />
         <Route
           path="*"
           element={

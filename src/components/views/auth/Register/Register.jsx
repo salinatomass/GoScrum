@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react'
 import { useFormik } from 'formik'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
+import { v4 as uuidv4 } from 'uuid'
+import { Switch, FormControlLabel } from '@mui/material'
+
+const BASE_API = 'https://goscrum-api.alkemy.org'
 
 export const Register = () => {
   const [data, setData] = useState({})
+  const navigate = useNavigate()
 
   const fetchData = async () => {
     try {
-      const res = await fetch('https://goscrum-api.alkemy.org/auth/data')
+      const res = await fetch(`${BASE_API}/auth/data`)
       const data = await res.json()
       setData(data.result)
     } catch (err) {
@@ -24,10 +29,11 @@ export const Register = () => {
     userName: '',
     email: '',
     password: '',
-    teamID: 'e42bd420-067d-4cbc-a9bc-07832a796a56',
+    teamID: '',
     role: '',
     continent: '',
-    region: '',
+    region: 'Otro',
+    switch: false,
   }
 
   const required = '* Campo obligatorio'
@@ -36,14 +42,43 @@ export const Register = () => {
     userName: Yup.string().min(4, 'La cantidad minima es 4').required(required),
     email: Yup.string().email('Debe ser un email válido').required(required),
     password: Yup.string().required(required),
-    // teamID: Yup.string().required(required),
     role: Yup.string().required(required),
     continent: Yup.string().required(required),
     region: Yup.string().required(required),
   })
 
-  const onSubmit = values => {
-    console.log(values)
+  const onSubmit = async values => {
+    const teamID = values.teamID ? values.teamID : uuidv4()
+
+    try {
+      const res = await fetch(`${BASE_API}/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user: {
+            userName: values.userName,
+            email: values.email,
+            password: values.password,
+            teamID,
+            role: values.role,
+            continent: values.continent,
+            region: values.region,
+          },
+        }),
+      })
+      const data = await res.json()
+
+      if (data.status_code === 201) {
+        const createdTeamID = data.result?.user?.teamID
+        navigate('/registered/' + createdTeamID, { replace: true })
+      } else {
+        alert('Algo salio mal')
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const formik = useFormik({ initialValues, validationSchema, onSubmit })
@@ -101,7 +136,31 @@ export const Register = () => {
             <div className="form-error">{errors.password}</div>
           )}
         </div>
-        <input type="hidden" name="teamID" value={values.teamID} />
+        <FormControlLabel
+          control={
+            <Switch
+              value={values.switch}
+              onChange={() => formik.setFieldValue('switch', !values.switch)}
+              name="switch"
+              color="secondary"
+            />
+          }
+          label="Perteneces a un equipo ya creado"
+        />
+        {values.switch && (
+          <div>
+            <label htmlFor="teamID">
+              Por favor, introduce el identificador de equipo
+            </label>
+            <input
+              type="text"
+              name="teamID"
+              id="teamID"
+              value={values.teamID}
+              onChange={handleChange}
+            />
+          </div>
+        )}
         <div>
           <label htmlFor="role">Rol</label>
           <select
