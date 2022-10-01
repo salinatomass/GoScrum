@@ -3,8 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 import './App.css'
 import { Tasks } from '../components/views/Tasks'
-import { Login } from '../components/views/Login'
-import { Register } from '../components/views/Register'
+import { Login, Register } from '../components/views/auth'
 
 const NotFound = lazy(() => import('../components/views/NotFound'))
 
