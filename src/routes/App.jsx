@@ -9,7 +9,7 @@ import { Registered } from '../components/views/Registered'
 const NotFound = lazy(() => import('../components/views/NotFound'))
 
 const RequireAuth = ({ children }) => {
-  if (!localStorage.getItem('logged'))
+  if (!localStorage.getItem('token'))
     return <Navigate to="/login" replace={true} />
 
   return children

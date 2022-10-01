@@ -49,6 +49,7 @@ export const Register = () => {
 
   const onSubmit = async values => {
     const teamID = values.teamID ? values.teamID : uuidv4()
+    const { userName, email, password, role, continent, region } = values
 
     try {
       const res = await fetch(`${API_ENDPOINT}/auth/register`, {
@@ -58,13 +59,13 @@ export const Register = () => {
         },
         body: JSON.stringify({
           user: {
-            userName: values.userName,
-            email: values.email,
-            password: values.password,
+            userName,
+            email,
+            password,
             teamID,
-            role: values.role,
-            continent: values.continent,
-            region: values.region,
+            role,
+            continent,
+            region,
           },
         }),
       })

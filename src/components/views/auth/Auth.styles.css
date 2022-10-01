@@ -46,6 +46,12 @@
   padding-top: 10px;
 }
 
+.form input.error,
+.form select.error,
+.form textarea.error {
+  border: 1px solid red;
+}
+
 @media screen and (min-width: 600px) {
   .auth {
     background-color: var(--global-bg-color-soft);

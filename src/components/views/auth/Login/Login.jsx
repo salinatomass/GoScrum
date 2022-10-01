@@ -1,52 +1,72 @@
 import { useNavigate, Link } from 'react-router-dom'
 import { useFormik } from 'formik'
+import * as Yup from 'yup'
+
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT
 
 export const Login = () => {
   const navigate = useNavigate()
   const initialValues = {
-    email: '',
+    userName: '',
     password: '',
   }
 
-  const validate = values => {
-    const errors = {}
+  const required = '* Campo obligatorio'
 
-    if (!values.email) {
-      errors.email = 'El email es requerido'
-    }
-
-    if (!values.password) {
-      errors.password = 'El password es requerido'
-    }
-
-    return errors
-  }
-
-  const onSubmit = () => {
-    localStorage.setItem('logged', 'yes')
-    navigate('/', { replace: true })
-  }
-
-  const { handleChange, handleSubmit, values, errors } = useFormik({
-    initialValues,
-    validate,
-    onSubmit,
+  const validationSchema = Yup.object().shape({
+    userName: Yup.string().min(4, 'La cantidad minima es 4').required(required),
+    password: Yup.string().required(required),
   })
+
+  const onSubmit = async values => {
+    const { userName, password } = values
+
+    try {
+      const res = await fetch(`${API_ENDPOINT}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userName,
+          password,
+        }),
+      })
+      const data = await res.json()
+
+      if (data.status_code === 200) {
+        localStorage.setItem('token', data.result?.token)
+        navigate('/', { replace: true })
+      } else {
+        alert('Usuario o contraseña incorrectos')
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const formik = useFormik({ initialValues, validationSchema, onSubmit })
+  const { handleChange, handleSubmit, values, errors, touched, handleBlur } =
+    formik
 
   return (
     <div className="auth">
       <form className="form" onSubmit={handleSubmit}>
         <h1>Iniciar sesión</h1>
         <div>
-          <label htmlFor="email">Email</label>
+          <label htmlFor="userName">Nombre de usuario</label>
           <input
-            type="email"
-            name="email"
-            id="email"
-            value={values.email}
+            type="text"
+            name="userName"
+            id="userName"
+            value={values.userName}
             onChange={handleChange}
+            onBlur={handleBlur}
+            className={errors.userName && touched.userName ? 'error' : ''}
           />
-          {errors.email && <div className="form-error">{errors.email}</div>}
+          {errors.userName && touched.userName && (
+            <div className="form-error">{errors.userName}</div>
+          )}
         </div>
         <div>
           <label htmlFor="password">Contraseña</label>
@@ -56,8 +76,10 @@ export const Login = () => {
             id="password"
             value={values.password}
             onChange={handleChange}
+            onBlur={handleBlur}
+            className={errors.password && touched.password ? 'error' : ''}
           />
-          {errors.password && (
+          {errors.password && touched.password && (
             <div className="form-error">{errors.password}</div>
           )}
         </div>
