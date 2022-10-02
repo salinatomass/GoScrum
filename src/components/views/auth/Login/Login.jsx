@@ -37,6 +37,7 @@ export const Login = () => {
 
       if (data.status_code === 200) {
         localStorage.setItem('token', data.result?.token)
+        localStorage.setItem('userName', data.result?.user.userName)
         navigate('/', { replace: true })
       } else {
         Swal.fire({

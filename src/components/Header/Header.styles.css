@@ -9,20 +9,6 @@ header > img {
   width: 90px;
 }
 
-header > div {
-  cursor: pointer;
-  color: var(--global-primary-color);
-}
-
-.wrapper_right_header {
-  display: flex;
-  flex-direction: row;
-}
-
-.wrapper_right_header div {
-  padding-right: 15px;
-}
-
 .black {
   color: black !important;
   font-size: 14px;
@@ -39,5 +25,17 @@ header button {
   background-color: var(--global-primary-color);
   border-color: var(--global-primary-color);
   color: white;
+  cursor: pointer;
+}
+
+.header_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--global-primary-color);
+}
+
+.header_logout {
+  font-size: 34px;
   cursor: pointer;
 }
