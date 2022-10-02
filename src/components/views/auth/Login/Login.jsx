@@ -1,6 +1,7 @@
 import { useNavigate, Link } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import Swal from 'sweetalert2'
 
 const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT
 
@@ -38,7 +39,14 @@ export const Login = () => {
         localStorage.setItem('token', data.result?.token)
         navigate('/', { replace: true })
       } else {
-        alert('Usuario o contraseña incorrectos')
+        Swal.fire({
+          title: 'Credencials inválidas',
+          text: 'Por favor introduzca credenciales válidas',
+          confirmButtonText: 'Aceptar',
+          width: '400px',
+          timer: 8000,
+          timerProgressBar: true,
+        })
       }
     } catch (err) {
       console.log(err)

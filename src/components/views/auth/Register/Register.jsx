@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 import { v4 as uuidv4 } from 'uuid'
 import { Switch, FormControlLabel } from '@mui/material'
+import Swal from 'sweetalert2'
 
 const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT
 
@@ -75,7 +76,14 @@ export const Register = () => {
         const createdTeamID = data.result?.user?.teamID
         navigate('/registered/' + createdTeamID, { replace: true })
       } else {
-        alert('Algo salio mal')
+        Swal.fire({
+          title: 'Uppps!',
+          text: 'Algo salió mal, vuelve a intentarlo',
+          confirmButtonText: 'Aceptar',
+          width: '400px',
+          timer: 8000,
+          timerProgressBar: true,
+        })
       }
     } catch (err) {
       console.log(err)
