@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
-import './Tasks.styles.css'
+import { debounce } from 'lodash'
 import { useResize } from '../../../hooks/useResize'
 import Header from '../../Header/Header'
 import { TaskForm } from '../../TaskForm/TaskForm'
 import Card from '../../Card/Card'
 
+import './Tasks.styles.css'
 import 'react-loading-skeleton/dist/skeleton.css'
 import Skeleton from 'react-loading-skeleton'
 import { Radio, RadioGroup, FormControl, FormControlLabel } from '@mui/material'
@@ -39,19 +40,9 @@ export const Tasks = () => {
   const renderAllTasks = () =>
     filteredList.map(task => <Card key={task._id} data={task} />)
 
-  const renderNewTasks = () =>
+  const renderCollumnTasks = text =>
     filteredList
-      .filter(task => task.status === 'NEW')
-      .map(task => <Card key={task._id} data={task} />)
-
-  const renderInProgressTasks = () =>
-    filteredList
-      .filter(task => task.status === 'IN PROGRESS')
-      .map(task => <Card key={task._id} data={task} />)
-
-  const renderFinishedTasks = () =>
-    filteredList
-      .filter(task => task.status === 'FINISHED')
+      .filter(task => task.status === text)
       .map(task => <Card key={task._id} data={task} />)
 
   const handleChangeImportance = e => {
@@ -68,6 +59,16 @@ export const Tasks = () => {
       )
     setFilteredList(list)
   }
+
+  const handleSearch = debounce(e => {
+    const formatedSearch = e.target.value.toLowerCase().replace(/\s/g, '')
+    setFilteredList(
+      list.filter(task => {
+        const formattedTask = task.title.toLowerCase().replace(/\s/g, '')
+        return formattedTask.includes(formatedSearch)
+      })
+    )
+  }, 1000)
 
   useEffect(() => {
     fetchTasks()
@@ -105,7 +106,7 @@ export const Tasks = () => {
               <input
                 type="text"
                 placeholder="Buscar por título..."
-                onChange={() => {}}
+                onChange={handleSearch}
               />
             </div>
             <select name="importance" onChange={handleChangeImportance}>
@@ -134,15 +135,15 @@ export const Tasks = () => {
                 <>
                   <div className="list">
                     <h4>Nuevas</h4>
-                    {renderNewTasks()}
+                    {renderCollumnTasks('NEW')}
                   </div>
                   <div className="list">
                     <h4>En proceso</h4>
-                    {renderInProgressTasks()}
+                    {renderCollumnTasks('IN PROGRESS')}
                   </div>
                   <div className="list">
                     <h4>Finalizadas</h4>
-                    {renderFinishedTasks()}
+                    {renderCollumnTasks('FINISHED')}
                   </div>
                 </>
               )}

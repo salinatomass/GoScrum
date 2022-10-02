@@ -145,6 +145,7 @@
   padding: 0.745rem 0.745rem;
   position: relative;
   width: 100%;
+  height: fit-content;
   box-sizing: border-box;
 }
 
