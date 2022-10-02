@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 const Card = ({ data }) => {
   const {
     title,
@@ -7,6 +9,10 @@ const Card = ({ data }) => {
     status,
     importance,
   } = data
+
+  const [showMore, setShowMore] = useState(false)
+
+  const datetime = new Date(createdAt).toLocaleString()
 
   const limitString = str => {
     if (str.length > 170)
@@ -18,11 +24,28 @@ const Card = ({ data }) => {
     <article className="card">
       <div className="close">x</div>
       <h3>{title}</h3>
-      <h6>{createdAt}</h6>
+      <h6>{datetime}</h6>
       <h5>{userName}</h5>
-      <button type="button">{status.toLowerCase()}</button>
-      <button type="button">{importance.toLowerCase()}</button>
-      <p>{limitString(description).string}</p>
+      <button className={status.toLowerCase()} type="button">
+        {status.toLowerCase()}
+      </button>
+      <button className={importance.toLowerCase()} type="button">
+        {importance.toLowerCase()}
+      </button>
+      {!showMore && <p>{limitString(description).string}</p>}
+      {showMore && (
+        <>
+          <p>{description}</p>
+          <button type="button" onClick={() => setShowMore(false)}>
+            Ver menos
+          </button>
+        </>
+      )}
+      {!showMore && limitString(description).addButton && (
+        <button type="button" onClick={() => setShowMore(true)}>
+          Ver más
+        </button>
+      )}
     </article>
   )
 }
