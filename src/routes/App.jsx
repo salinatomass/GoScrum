@@ -5,6 +5,7 @@ import './App.css'
 import { Tasks } from '../components/views/Tasks'
 import { Login, Register } from '../components/views/auth'
 import { Registered } from '../components/views/Registered'
+import { Donate } from '../components/views/Donate'
 
 const NotFound = lazy(() => import('../components/views/NotFound'))
 
@@ -24,6 +25,14 @@ const App = () => {
           element={
             <RequireAuth>
               <Tasks />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/donate"
+          element={
+            <RequireAuth>
+              <Donate />
             </RequireAuth>
           }
         />

@@ -15,6 +15,9 @@ const Header = () => {
     <header>
       <img src={Logo} alt="Go Scrum logo" />
       <div className="header_wrapper">
+        <button onClick={() => navigate('/donate', { replace: true })}>
+          Donar
+        </button>
         <div>{localStorage.getItem('userName')}</div>
         <span className="header_logout" onClick={handleLogout}>
           x
